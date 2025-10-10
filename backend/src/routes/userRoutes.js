@@ -48,8 +48,10 @@ router.post("/signup", async(req, res) => {
             console.error(error);
             res.status(500).json({ error: "Server error"});
         }
+    
+   })
 
-        router.post("/signin", async (req, res) => {
+       router.post("/signin", async (req, res) => {
             const { email, password } = req.body;
             if(!email || !password ) {
                 return res.status(400).json({ error: "All fields are required"});
@@ -59,11 +61,11 @@ router.post("/signup", async(req, res) => {
               const existingUser = await prisma.user.findUnique({ where: { email }});
               if(!existingUser) return res.status(400).json({error: "Invalid credentials"});
 
-              const isMatch = await bcrypt.compare(password, user.password);
+              const isMatch = await bcrypt.compare(password, existingUser.password);
               if(!isMatch) return res.status(400).json({ error: "Invalid password"});
                             
               const token = jwt.sign({
-                id: user.id, email: user.email
+                id: existingUser.id, email: existingUser.email
               }, { expiresIn: "1h"})
                
 
@@ -77,9 +79,7 @@ router.post("/signup", async(req, res) => {
                 console.error(error);
                 res.status(500).json({ error: "Server error "});
             }
-        })
-    
-})
+    })
 
 
 
