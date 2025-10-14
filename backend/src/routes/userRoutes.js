@@ -66,12 +66,12 @@ router.post("/signup", async(req, res) => {
                             
               const token = jwt.sign({
                 id: existingUser.id, email: existingUser.email
-              }, { expiresIn: "1h"})
+              },JWT_SECRET, { expiresIn: "1h"})
                
 
               res.json({
                 message: "Signin successfull",
-                user: { id: user.id, email: user.email},
+                existingUser: { id: existingUser.id, email: existingUser.email},
                 token
               })
 

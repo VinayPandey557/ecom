@@ -7,7 +7,7 @@ import { createProduct , getProducts , getProductBySlug } from "../controllers/p
 const router = express.Router();
 
 
-router.get("/", authMiddleware, createProduct) // Protected
+router.post("/", authMiddleware, createProduct) // Protected
 router.get("/", getProducts );
 router.get("/:slug", getProductBySlug);
 
